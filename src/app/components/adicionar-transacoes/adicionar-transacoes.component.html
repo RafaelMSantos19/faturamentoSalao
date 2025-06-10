@@ -1,0 +1,31 @@
+<div class="container">
+  <h1>Adicionar Transações</h1>
+  <form [formGroup]="formulario" (ngSubmit)="enviarFormulario()">
+    <div formArrayName="transacoes">
+      <div *ngFor="let transacao of transacoes.controls; let i = index" [formGroupName]="i">
+        <div class="form-group">
+          <label for="nome">Nome</label>
+          <input formControlName="nome" type="text" class="form-control" id="nome" placeholder="Digite o nome">
+        </div>
+        <div class="form-group">
+          <label for="valor">Valor</label>
+          <input formControlName="valor" type="number" class="form-control" id="valor" placeholder="Digite o valor">
+        </div>
+        <div class="form-group">
+          <label for="tipo">Tipo</label>
+          <select formControlName="tipo" class="form-control" id="tipo">
+            <option value="1">Receita</option>
+            <option value="2">Despesa</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="datahora">Data/Hora</label>
+          <input formControlName="datahora" type="datetime-local" class="form-control" id="datahora">
+        </div>
+        <button type="button" class="btn btn-danger" (click)="removerTransacao(i)">Remover</button>
+      </div>
+    </div>
+    <button type="button" class="btn btn-primary" (click)="adicionarTransacao()">Adicionar Transação</button>
+    <button type="submit" class="btn btn-success">Enviar</button>
+  </form>
+</div>

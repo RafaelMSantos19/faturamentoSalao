@@ -1,0 +1,6 @@
+<div *ngFor="let transacao of transacoes">
+  <p>Nome: {{ transacao.nome }}</p>
+  <p>Valor: {{ transacao.valor }}</p>
+  <p>Data/Hora: {{ transacao.datahora | date }}</p>
+  <hr>
+</div>
