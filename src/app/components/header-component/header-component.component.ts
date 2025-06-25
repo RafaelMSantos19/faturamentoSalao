@@ -1,17 +1,21 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-header-component',
   templateUrl: './header-component.component.html',
   styleUrls: ['./header-component.component.scss']
 })
-export class HeaderComponentComponent {
+export class HeaderComponentComponent implements OnInit {
 
-  constructor(private router: Router) {}
+  constructor() { }
 
-  logout() {
-    // Implementar logout quando necessário
-    this.router.navigate(['/login']);
+  ngOnInit(): void {
   }
+
+  logout(): void {
+    // Implementar lógica de logout aqui
+    console.log('Logout executado');
+    // Por exemplo: limpar localStorage, redirecionar para login, etc.
+  }
+
 }

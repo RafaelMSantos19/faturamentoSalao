@@ -1,14 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SupabaseService } from 'src/app/services/supabase.service';
-
-interface Transacao {
-  id: number;
-  user_id: string;
-  nome: string;
-  valor: number;
-  tipo: number;
-  datahora: string;
-}
+import { SupabaseService, Transacao } from 'src/app/services/supabase.service';
 
 @Component({
   selector: 'app-home',

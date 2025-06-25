@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { environment } from 'src/enviroments/enviroment';
 
-interface Transacao {
-  id?: number;
+export interface Transacao {
+  id: number;
   user_id: string;
   nome: string;
   valor: number;

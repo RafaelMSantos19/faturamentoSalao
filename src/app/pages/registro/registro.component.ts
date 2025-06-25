@@ -92,8 +92,9 @@ export class RegistroComponent implements OnInit {
 
   marcarCamposComoTocados(): void {
     this.transacoes.controls.forEach(transacao => {
-      Object.keys(transacao.controls).forEach(key => {
-        transacao.get(key)?.markAsTouched();
+      const formGroup = transacao as FormGroup;
+      Object.keys(formGroup.controls).forEach(key => {
+        formGroup.get(key)?.markAsTouched();
       });
     });
   }
