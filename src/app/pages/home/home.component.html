@@ -1,16 +1,122 @@
-<body>
-  <h1>Ola mundo!</h1>  
+<header-component></header-component>
 
-  <p>home works!</p>
+<div class="container fade-in-up">
+  <!-- Resumo Financeiro -->
+  <div class="summary-cards">
+    <div class="summary-card receita">
+      <div class="summary-value" style="color: #28a745;">
+        {{ formatCurrency(totalReceitas) }}
+      </div>
+      <div class="summary-label">Total Receitas</div>
+    </div>
+    
+    <div class="summary-card despesa">
+      <div class="summary-value" style="color: #dc3545;">
+        {{ formatCurrency(totalDespesas) }}
+      </div>
+      <div class="summary-label">Total Despesas</div>
+    </div>
+    
+    <div class="summary-card saldo">
+      <div class="summary-value" [style.color]="saldoTotal >= 0 ? '#28a745' : '#dc3545'">
+        {{ formatCurrency(saldoTotal) }}
+      </div>
+      <div class="summary-label">Saldo Total</div>
+    </div>
+  </div>
 
-  <a routerLink="/login">Login</a>
-  <br>
-  <a routerLink="/register">Register</a>
+  <!-- Filtros -->
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">🔍 Filtros</h2>
+    </div>
+    
+    <div class="filters">
+      <div class="filter-group">
+        <label>Tipo</label>
+        <select class="form-control" [(ngModel)]="filtroTipo" (change)="aplicarFiltros()">
+          <option value="">Todos</option>
+          <option value="1">Receitas</option>
+          <option value="2">Despesas</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label>Data Inicial</label>
+        <input type="date" class="form-control" [(ngModel)]="dataInicial" (change)="aplicarFiltros()">
+      </div>
+      
+      <div class="filter-group">
+        <label>Data Final</label>
+        <input type="date" class="form-control" [(ngModel)]="dataFinal" (change)="aplicarFiltros()">
+      </div>
+      
+      <div class="filter-group">
+        <label>Buscar</label>
+        <input type="text" class="form-control" placeholder="Nome da transação..." 
+               [(ngModel)]="termoBusca" (input)="aplicarFiltros()">
+      </div>
+      
+      <div class="filter-group" style="justify-content: flex-end; margin-top: 20px;">
+        <button class="btn btn-warning" (click)="limparFiltros()">
+          🗑️ Limpar Filtros
+        </button>
+      </div>
+    </div>
+  </div>
 
-  <h1>Transacoes:</h1>
-  <app-transacoes></app-transacoes>
+  <!-- Tabela de Transações -->
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">📋 Histórico de Transações</h2>
+      <div style="display: flex; gap: 10px; margin-top: 10px;">
+        <a routerLink="/registro" class="btn btn-primary">
+          ➕ Nova Transação
+        </a>
+        <button class="btn btn-info" (click)="atualizarDados()">
+          🔄 Atualizar
+        </button>
+      </div>
+    </div>
 
-  <app-adicionar-transacoes></app-adicionar-transacoes>
+    <div *ngIf="carregando" class="loading">
+      <div class="spinner"></div>
+    </div>
 
-</body>
+    <div *ngIf="!carregando && transacoesFiltradas.length === 0" style="text-align: center; padding: 40px; color: #666;">
+      <h3>📭 Nenhuma transação encontrada</h3>
+      <p>Adicione sua primeira transação ou ajuste os filtros.</p>
+    </div>
 
+    <table *ngIf="!carregando && transacoesFiltradas.length > 0" class="table">
+      <thead>
+        <tr>
+          <th>Data/Hora</th>
+          <th>Nome</th>
+          <th>Tipo</th>
+          <th>Valor</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let transacao of transacoesFiltradas">
+          <td>{{ transacao.datahora }}</td>
+          <td>{{ transacao.nome }}</td>
+          <td>
+            <span class="badge" [ngClass]="transacao.tipo === 1 ? 'badge-receita' : 'badge-despesa'">
+              {{ transacao.tipo === 1 ? '💰 Receita' : '💸 Despesa' }}
+            </span>
+          </td>
+          <td [style.color]="transacao.tipo === 1 ? '#28a745' : '#dc3545'" style="font-weight: 600;">
+            {{ formatCurrency(transacao.valor) }}
+          </td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="excluirTransacao(transacao.id)">
+              🗑️ Excluir
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
