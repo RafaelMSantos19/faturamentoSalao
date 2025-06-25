@@ -8,7 +8,7 @@ export interface Transacao {
   nome: string;
   valor: number;
   tipo: number;
-  datahora: string;
+  datahora: Date;
 }
 
 @Injectable({
@@ -40,7 +40,13 @@ export class SupabaseService {
         throw error;
       }
 
-      return data || [];
+      // Convert datahora string to Date object
+      const transacoes = (data || []).map(item => ({
+        ...item,
+        datahora: new Date(item.datahora)
+      }));
+
+      return transacoes;
     } catch (error) {
       console.error('Erro no serviço getTransacoes:', error);
       return [];
