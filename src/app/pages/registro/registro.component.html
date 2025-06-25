@@ -1,0 +1,145 @@
+<app-header-component></app-header-component>
+
+<div class="container fade-in-up">
+  <div class="card">
+    <div class="card-header">
+      <h1 class="card-title">💰 Registrar Transações</h1>
+      <p style="color: #666; margin-top: 8px;">
+        Adicione suas receitas e despesas do salão
+      </p>
+    </div>
+
+    <form [formGroup]="formulario" (ngSubmit)="enviarFormulario()">
+      <div formArrayName="transacoes">
+        <div *ngFor="let transacao of transacoes.controls; let i = index" 
+             [formGroupName]="i" class="transaction-form">
+          
+          <div class="form-header">
+            <h3>📝 Transação {{ i + 1 }}</h3>
+            <button type="button" class="btn btn-danger btn-sm" 
+                    (click)="removerTransacao(i)" 
+                    [disabled]="transacoes.length === 1">
+              🗑️ Remover
+            </button>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nome-{{i}}">
+                <span class="required">*</span> Nome da Transação
+              </label>
+              <input formControlName="nome" 
+                     type="text" 
+                     class="form-control" 
+                     id="nome-{{i}}" 
+                     placeholder="Ex: Corte de cabelo, Aluguel, Produtos..."
+                     [class.error]="isFieldInvalid('nome', i)">
+              <div *ngIf="isFieldInvalid('nome', i)" class="error-message">
+                Nome é obrigatório
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="tipo-{{i}}">
+                <span class="required">*</span> Tipo
+              </label>
+              <select formControlName="tipo" 
+                      class="form-control" 
+                      id="tipo-{{i}}"
+                      [class.error]="isFieldInvalid('tipo', i)">
+                <option value="">Selecione o tipo</option>
+                <option value="1">💰 Receita (Entrada)</option>
+                <option value="2">💸 Despesa (Saída)</option>
+              </select>
+              <div *ngIf="isFieldInvalid('tipo', i)" class="error-message">
+                Tipo é obrigatório
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="valor-{{i}}">
+                <span class="required">*</span> Valor (R$)
+              </label>
+              <input formControlName="valor" 
+                     type="number" 
+                     step="0.01" 
+                     min="0"
+                     class="form-control" 
+                     id="valor-{{i}}" 
+                     placeholder="0,00"
+                     [class.error]="isFieldInvalid('valor', i)">
+              <div *ngIf="isFieldInvalid('valor', i)" class="error-message">
+                Valor é obrigatório e deve ser maior que zero
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="datahora-{{i}}">
+                <span class="required">*</span> Data e Hora
+              </label>
+              <input formControlName="datahora" 
+                     type="datetime-local" 
+                     class="form-control" 
+                     id="datahora-{{i}}"
+                     [class.error]="isFieldInvalid('datahora', i)">
+              <div *ngIf="isFieldInvalid('datahora', i)" class="error-message">
+                Data e hora são obrigatórias
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" 
+                class="btn btn-info" 
+                (click)="adicionarTransacao()">
+          ➕ Adicionar Outra Transação
+        </button>
+        
+        <button type="button" 
+                class="btn btn-warning" 
+                (click)="limparFormulario()">
+          🗑️ Limpar Tudo
+        </button>
+        
+        <button type="submit" 
+                class="btn btn-success" 
+                [disabled]="formulario.invalid || enviando">
+          <span *ngIf="enviando">⏳ Salvando...</span>
+          <span *ngIf="!enviando">💾 Salvar Transações</span>
+        </button>
+      </div>
+    </form>
+
+    <!-- Resumo das transações antes de salvar -->
+    <div *ngIf="transacoes.length > 0" class="preview-summary">
+      <h3>📊 Resumo das Transações</h3>
+      <div class="summary-grid">
+        <div class="summary-item receita">
+          <span class="label">Total Receitas:</span>
+          <span class="value">{{ formatCurrency(calcularTotalReceitas()) }}</span>
+        </div>
+        <div class="summary-item despesa">
+          <span class="label">Total Despesas:</span>
+          <span class="value">{{ formatCurrency(calcularTotalDespesas()) }}</span>
+        </div>
+        <div class="summary-item saldo">
+          <span class="label">Saldo:</span>
+          <span class="value" [style.color]="calcularSaldo() >= 0 ? '#28a745' : '#dc3545'">
+            {{ formatCurrency(calcularSaldo()) }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botão para voltar -->
+  <div style="text-align: center; margin-top: 24px;">
+    <a routerLink="/home" class="btn btn-primary">
+      ← Voltar ao Dashboard
+    </a>
+  </div>
+</div>

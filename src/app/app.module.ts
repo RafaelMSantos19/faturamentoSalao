@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { SupabaseService } from './services/supabase.service';
 import { AppRoutingModule } from './app-routing.module';
@@ -11,6 +11,7 @@ import { AdicionarTransacoesComponent } from './components/adicionar-transacoes/
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { RegistroComponent } from './pages/registro/registro.component';
 import { HeaderComponentComponent } from './components/header-component/header-component.component';
 
 @NgModule({
@@ -22,13 +23,15 @@ import { HeaderComponentComponent } from './components/header-component/header-c
     HomeComponent,
     LoginComponent,
     RegisterComponent,
+    RegistroComponent,
     HeaderComponentComponent 
   ],
 
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   
   providers: [ SupabaseService ],
