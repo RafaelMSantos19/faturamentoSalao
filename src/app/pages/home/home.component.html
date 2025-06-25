@@ -1,4 +1,4 @@
-<app-header-component></app-header-component>
+<header-component></header-component>
 
 <div class="container fade-in-up">
   <!-- Resumo Financeiro -->
@@ -100,7 +100,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let transacao of transacoesFiltradas">
-          <td>{{ formatDate(transacao.datahora) }}</td>
+          <td>{{ transacao.datahora }}</td>
           <td>{{ transacao.nome }}</td>
           <td>
             <span class="badge" [ngClass]="transacao.tipo === 1 ? 'badge-receita' : 'badge-despesa'">
